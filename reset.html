@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Reset Password</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+      
+
+        p {
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        small {
+            color: red;
+        }
+
+        a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .custom-alert {
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #f2f2f2;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .success {
+            background-color: #4CAF50;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Reset Password</h1>
+        <form id="resetForm">
+            <label for="recoveryEmail">Recovery Email:</label>
+            <input type="email" id="recoveryEmail" name="recoveryEmail" required>
+            <small id="emailError"></small>
+
+            <button type="submit">Send Reset Link</button>
+        </form>
+        <div id="notification" class="hidden">
+            <div class="custom-alert" id="customAlert">
+                <p id="alertMessage"></p>
+                <button id="closeAlert">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('resetForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            
+            const recoveryEmail = document.getElementById('recoveryEmail').value;
+            
+            if (validateEmail(recoveryEmail)) {
+                sendResetEmail(recoveryEmail);
+                document.getElementById('emailError').textContent = '';
+            } else {
+                document.getElementById('emailError').textContent = 'Invalid email format';
+            }
+        });
+
+        function validateEmail(email) {
+            const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+            return emailPattern.test(email);
+        }
+
+        function sendResetEmail(email) {
+            const isSuccess = Math.random() < 0.5; 
+            
+            if (isSuccess) {
+                showNotification('reset link sent.', 'success');
+            }
+        }
+
+        function showNotification(message, type) {
+            const alertMessage = document.getElementById('alertMessage');
+            alertMessage.textContent = message;
+            
+            const customAlert = document.getElementById('customAlert');
+            customAlert.className = `custom-alert ${type}`;
+            
+            document.getElementById('notification').classList.remove('hidden');
+
+            document.getElementById('closeAlert').addEventListener('click', function () {
+                window.location.href = 'login.html'; 
+            });
+        }
+    </script>
+</body>
+</html>
